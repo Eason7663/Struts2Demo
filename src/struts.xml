@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<!-- 可以动态的访问函数 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <!-- 指定全局国际化资源文件的前缀名称 -->
+    <constant name="struts.custom.i18n.resources" value="mess"></constant>
+    <!-- 指定国际化编码所使用的字符集、解决乱码-->
+    <constant name="struts.i18n.encoding" value="utf-8"></constant>
+    <!-- 限制上传文件的大小，默认为2MB -->
+    <constant name="struts.multipart.maxSize" value="100000000"></constant>
+    <!-- 默认struts2的访问action类的后缀是.action -->
+    <constant name="struts.action.extension" value="action"></constant>
+	<!-- 去除浏览器缓存，开发阶段比较方便 -->
+    <constant name="struts.server.static.browserCache" value="false"></constant>
+	<!-- strut.xml文件修改后系统自动加载，开发阶段方便，生产环境最好是false -->
+    <constant name="struts.configuration.xml.reload" value="true"></constant>
+    <!-- 打印出更详细的信息 -->
+    <constant name="struts.Devmode" value="true"></constant>
+    <!-- 设置struts默认主题  -->
+    <constant name="struts.ui.theme" value="simple"></constant>
+    
+    <include file="struts-default.xml"></include>
+    
+    <!-- 所有的Action定义都应该放在package下      -->
+    <package name="default" extends="struts-default">
+    <!-- 配置action类 -->
+    <action name="loginAction" class="ht.com.action.LoginAction">
+    	<result name="input">/pages/hello.jsp</result>
+    	<result name="success">/pages/hello.jsp</result>
+    	<result name="login">/pages/login.jsp</result>    	
+    </action>
+    <action name="studAction" class="ht.com.action.StudentAction">
+    	<result name="input">/pages/studAdd.jsp</result>
+    	<result name="success">/pages/studAdd.jsp</result>
+    </action>
+     <action name="studAction1" class="ht.com.action.StudentAction1">
+    	<result name="input">/pages/studAdd1.jsp</result>
+    	<result name="success">/a1.jsp</result>
+    </action>
+ <!--    <action name="methodAction" class="ht.com.action.MethodAction">
+    	配置重定向的result
+		<result name="input" type="redirectAction">studAction.action</result>
+		<result name="success" type="redirectAction">studAction.action</result>
+	</action> -->
+	<action name="methodAction" class="ht.com.action.MethodAction">
+		<result name="input" type="redirectAction">studAction.action</result>
+		<result name="success" type="redirectAction">studAction.action</result>
+	</action>
+	<action name="methodAction1" class="ht.com.action.MethodAction" method="add">
+		<result name="input" type="redirectAction">studAction.action</result>
+	</action>
+	<action name="methodAction2" class="ht.com.action.MethodAction" method="update">
+		<result name="success" type="redirectAction">studAction.action</result>
+	</action>
+	<action name="methodAction3" class="ht.com.action.MethodAction" method="list">
+		<result name="list" >/pages/login.jsp</result>
+	</action>
+   
+    </package>
+    <package name="stud" extends="struts-default" namespace="/">
+    	<interceptors>
+    	<!-- 配置拦截器栈 -->
+    		<interceptor-stack name="default">
+    			<interceptor-ref name="defaultStack"></interceptor-ref>
+    		</interceptor-stack>
+    	</interceptors>
+    	<!-- 调用拦截器栈，对整个包中所有的action起作用 -->
+    	<default-interceptor-ref name="default"/>
+    	<!-- 配置全局result -->
+    	<global-results>
+    		<result name="login">/login.jsp</result>
+    	</global-results>
+    	<!-- 在系统中出现空指针时，重新登录 -->
+    	<global-exception-mappings>
+    		<exception-mapping result="login" exception="java.lang.NullPointerException"></exception-mapping>
+    	</global-exception-mappings>
+    	<action name="empAction" class="ht.com.action.EmpAction">
+    		<!-- 每个action最好都要配置input和success -->
+    		<result name="input">/pages/emp.jsp</result>
+    		<result name="success">/pages/empList.jsp</result>
+    	</action>
+    	<!-- 
+        <action name="login" class="com.test.action.LoginAction">
+            <result name="error">/error.jsp</result>
+            <result name="success">/welcome.jsp</result>
+        </action>
+        -->
+
+    </package>
+
+</struts>
