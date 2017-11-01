@@ -10,12 +10,13 @@
 <body>
 	<h1 align="center">系统登录</h1>
 	<hr/>
-	
+
 	<s:form action="loginAction.action" method="post" name="form1">
 	
 	用户名称：<s:textfield name="username"/><br/>
 	登录密码：<s:password name="password"/><br/>
 	<input type="submit" value="登录">
 	</s:form>
+	<hr/>
 </body>
 </html>
